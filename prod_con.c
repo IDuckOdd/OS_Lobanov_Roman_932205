@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <pthread.h>
 #include <unistd.h>
-
 int ready = 0;
 
 pthread_mutex_t mutex;
@@ -15,8 +14,9 @@ void* producer(void* arg) {
         pthread_mutex_lock(&mutex);
 
         //Wait free place
-        while (ready == 1) {
-            pthread_cond_wait(&cond_var, &mutex);
+        if (ready == 1) {
+            pthread_mutex_unlock(&mutex);
+            continue;
         }
 
         ready = 1;
@@ -41,7 +41,6 @@ void* consumer(void* arg) {
         printf("Event taken\n");
         ready = 0;
 
-        pthread_cond_signal(&cond_var); //Notify producer
         pthread_mutex_unlock(&mutex);
     }
     return NULL;
