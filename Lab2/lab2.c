@@ -109,24 +109,21 @@ int main() {
             signal_received = 0;
         }
 
-        // Проверим, доступен ли сокет для чтения (новое соединение)
-        if (FD_ISSET(server_fd, &readfds)) {
-            // Принять новое соединение
-            client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len);
-            if (client_fd < 0) {
-                perror("accept failed");
-                continue;
-            }
-
-            printf("New connection from %s:%d\n",
-                inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
-
-            // Обрабатываем одно соединение
-            handle_connection(client_fd);
-
-            // Закрываем соединение после обработки
-            close(client_fd);
+        // Принять новое соединение
+        client_fd = accept(server_fd, (struct sockaddr *)&client_addr, &client_len);
+        if (client_fd < 0) {
+            perror("accept failed");
+            continue;
         }
+
+        printf("New connection from %s:%d\n",
+            inet_ntoa(client_addr.sin_addr), ntohs(client_addr.sin_port));
+
+        // Обрабатываем одно соединение
+        handle_connection(client_fd);
+
+        // Закрываем соединение после обработки
+        close(client_fd);
     }
 
     // Закрытие серверного сокета
