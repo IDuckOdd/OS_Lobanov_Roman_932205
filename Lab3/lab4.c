@@ -25,7 +25,7 @@ static long hours_since_tunguska(void)
     return (current_time.tv_sec - TUNGUSKA_TIMESTAMP) / 3600;
 }
 
-// Функция для вывода данных в /proc/tsulab
+// Функция для вывода данных /proc/tsulab
 static int tgu_proc_show(struct seq_file *m, void *v)
 {
     long hours = hours_since_tunguska();
@@ -50,7 +50,7 @@ static const struct proc_ops tgu_proc_ops = {
 // Инициализация модуля
 static int __init tgu_module_init(void)
 {
-    proc_create(PROC_FILENAME, 0, NULL, &tgu_proc_ops); // Создание файла в /proc
+    proc_create(PROC_FILENAME, 0, NULL, &tgu_proc_ops); // Создание файла
     printk(KERN_INFO "TSU: Module initialized.\n");
     return 0;
 }
@@ -58,8 +58,8 @@ static int __init tgu_module_init(void)
 // Завершение работы модуля
 static void __exit tgu_module_exit(void)
 {
-    remove_proc_entry(PROC_FILENAME, NULL); // Удаление файла из /proc
-    printk(KERN_INFO "TSU: Module exited.\n");
+    remove_proc_entry(PROC_FILENAME, NULL); //Удаление файла
+    printk(KERN_INFO "Tomsk State University forever!\n");
 }
 
 // Регистрация функций инициализации и завершения
